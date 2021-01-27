@@ -5,12 +5,11 @@
 - Tested and working upto `Magento 2.4.1`
 
 ### Installation
-- Create the following folder structure inside "app/code" folder and copy all the files
-  "Mesh/MeshPayment"
-- After you have copied all the files the folder structure should be like this
-  "app/code/Mesh/MeshPayment/...."
-- Enable Mesh Payment Module
-  `php bin/magento module:enable Mesh_MeshPayment`
+- Download the Mesh extension as zip file from [here (mesh.zip)](https://github.com/ynloultratech/mesh-magento/releases/latest). Make sure you download the most recent version.
+- Create the following folder structure inside `app/code` folder `Mesh/MeshPayment`
+- Unzip contents into `app/code/Mesh/MeshPayment` folder
+- After you have all the files your folder structure should be like this `app/code/Mesh/MeshPayment/composer.json`
+- From the server terminal, navigate to the root Magento directory and run  `php bin/magento module:enable Mesh_MeshPayment`
 - Run Setup Upgrade
   `php bin/magento setup:upgrade`
 - Run DI Compilation to generate classes
