@@ -19,6 +19,8 @@ use Mesh\MeshPayment\Helper\Data as MeshPaymentHelper;
 class Paynup extends Action
 {
 
+    const API_KEY = 'payment/meshpayment/api_key';
+    const API_ID = 'payment/meshpayment/api_iss';
     const AUTO_REDIRECT = 'payment/meshpayment/autoRedirect';
     const AUTO_REDEEM = 'payment/meshpayment/autoRedeem';
     const ALLOW_SHARE = 'payment/meshpayment/allowShare';
@@ -83,7 +85,8 @@ class Paynup extends Action
         MeshPaymentHelper $meshPaymentHelper,
         Redirect $resultRedirectFactory,
         ScopeConfigInterface $scopeConfig
-    ) {
+    )
+    {
         $this->_checkoutSession = $checkoutSession;
         $this->_order = $order;
         $this->_invoiceService = $invoiceService;
@@ -102,6 +105,8 @@ class Paynup extends Action
      */
     public function execute()
     {
+        $api_key = $this->scopeConfig->getValue(self::API_KEY, ScopeInterface::SCOPE_STORE);
+        $api_iss = $this->scopeConfig->getValue(self::API_ID, ScopeInterface::SCOPE_STORE);
         $autoRedirect = $this->scopeConfig->isSetFlag(self::AUTO_REDIRECT, ScopeInterface::SCOPE_STORE);
         $autoRedeem = $this->scopeConfig->isSetFlag(self::AUTO_REDEEM, ScopeInterface::SCOPE_STORE);
         $allowShare = $this->scopeConfig->isSetFlag(self::ALLOW_SHARE, ScopeInterface::SCOPE_STORE);
@@ -129,12 +134,52 @@ class Paynup extends Action
 
         $orderId = $order->getIncrementId();
         $amount = $order->getGrandTotal();
+
+        $email = $order->getBillingAddress()->getEmail();
+        $name = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+        $phone = $order->getBillingAddress()->getTelephone();
+        $city = $order->getBillingAddress()->getRegion();
+        $state = $order->getBillingAddress()->getRegionCode();
+        $postcode = $order->getBillingAddress()->getPostcode();
+        $address = $order->getBillingAddress()->getStreet();
+
         $token = $this->meshPaymentHelper->getToken($orderId);
+
         $sucessUrl = $this->_url->getUrl('checkout/onepage/success');
         $HandlerUrl = $this->_url->getUrl('meshpayment/ipn/handler');
+
 //        $testWebHok = "https://webhook.site/43aef863-9708-41c0-a61e-360043f50ecc";
 
+        $claim_data = [
+            "iss" => $api_iss,
+            "jti" => $api_key,
+            "iat" => time(),
+            "params" => [
+                "redirectUrl" => $sucessUrl,
+                "autoRedirect" => $autoRedirect,
+                "autoRedeem" => $autoRedeem,
+//                "allowRedeem" => true,
+                "qrCode" => $qrCode,
+                "orderNumber" => $orderId,
+                "receiptEmail" => $email,
+                "amount" => $amount,
+                "customerName" => $name,
+                "customerPhone" => $phone,
+                "billingAddress" => $address[0],
+                "billingCity" => $city,
+                "billingState" => $state,
+                "billingZipCode" => $postcode,
+                "IPNHandlerUrl" => $HandlerUrl,
+                "token" => $token
+            ]
+        ];
+
+        $claim = $this->meshPaymentHelper->getClaim($claim_data);
+
         $resultRedirect = $this->resultRedirectFactory->create();
+
+        $redLinkClaim = 'https://egiftcert.paynup.com?claim=' . $claim;
+
         $redLink = 'https://egiftcert.paynup.com?token=' . $token
             . '&orderNumber=' . $orderId
             . '&amount=' . $amount
@@ -145,7 +190,7 @@ class Paynup extends Action
             . '&autoRedeem=' . $autoRedeem
             . '&qrCode=' . $qrCode;
 
-        $resultRedirect->setUrl($redLink);
+        $resultRedirect->setUrl($redLinkClaim);
 
         return $resultRedirect;
     }

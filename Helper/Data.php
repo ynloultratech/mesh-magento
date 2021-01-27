@@ -82,6 +82,13 @@ class Data extends AbstractHelper
         return static::encode($token, $api_key);
     }
 
+    public function getClaim($claim_data)
+    {
+        $api_key = $this->scopeConfig->getValue(self::API_KEY, ScopeInterface::SCOPE_STORE);
+
+        return static::encode($claim_data, $api_key);
+    }
+
     /**
      * decode token
      */
