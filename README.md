@@ -1,5 +1,9 @@
 # Mesh Payment Module for Magento 2
 
+[![Version](https://img.shields.io/github/release/ynloultratech/mesh-magento.svg)](https://github.com/ynloultratech/mesh-magento)
+[![Magento](https://img.shields.io/badge/Magento-2.1+-blue.svg)](http://magento.com)
+[![License](https://img.shields.io/github/license/ynloultratech/mesh-magento.svg)](https://github.com/ynloultratech/mesh-magento/blob/master/LICENSE)
+
 ### Requirement & Compatibility
 - Requires magento version at least: `2.x`
 - Tested and working upto `Magento 2.4.1`
