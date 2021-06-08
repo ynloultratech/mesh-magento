@@ -6,8 +6,7 @@ define(
         'Magento_Customer/js/model/customer',
         'Magento_Checkout/js/checkout-data',
         'Magento_Checkout/js/action/select-shipping-address',
-        'mage/url',
-        'https://egiftcert-widget.paynup.com/index.js'
+        'mage/url'
     ],
     function ($, Component, quote, customer, checkoutData, selectShippingAddressAction, url) {
         'use strict';
