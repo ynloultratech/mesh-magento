@@ -5,13 +5,13 @@
         "php": "^5.5||^5.6||^7.0"
     },
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "license": "MIT",
     "authors": [
         {
-            "name": "Heikel Villar",
-            "email": "heikelvillar@gmail.com",
-            "role": "Developer"
+            "name": "Octavio Yndart",
+            "email": "oyndart@ynloultratech.com",
+            "role": "CEO/President"
         }
     ],
     "autoload": {
