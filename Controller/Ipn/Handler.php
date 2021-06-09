@@ -13,8 +13,11 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\ScopeInterface;
 use Mesh\MeshPayment\Helper\Data as MeshPaymentHelper;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 
-class Handler extends Action
+class Handler extends Action implements CsrfAwareActionInterface
 {
 
     const API_KEY = 'payment/meshpayment/api_key';
@@ -122,5 +125,14 @@ class Handler extends Action
         }
 
         return $resultJson;
+    }
+
+    public function createCsrfValidationException(RequestInterface $request): ? InvalidRequestException
+    {
+        return null;
+    }
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 }

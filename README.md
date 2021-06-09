@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/github/license/ynloultratech/mesh-magento.svg)](https://github.com/ynloultratech/mesh-magento/blob/master/LICENSE)
 
 ### Requirement & Compatibility
-- Requires magento version at least: `2.x`
-- Tested and working upto `Magento 2.4.1`
+- Requires magento version at least: `2.3` and `2.4`
+- Tested and working upto `Magento 2.4.3`
 
 ### Installation
 - Download the Mesh extension as zip file from [here (mesh.zip)](https://github.com/ynloultratech/mesh-magento/releases/latest). Make sure you download the most recent version.
